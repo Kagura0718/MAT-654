@@ -1,0 +1,42 @@
+\documentclass[a4paper]{article}
+\usepackage{setspace}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{amsmath}               
+  {
+      \theoremstyle{plain}
+      \newtheorem{assumption}{Assumption}
+  }
+\usepackage[colorinlistoftodos]{todonotes}
+\onehalfspacing
+
+\title{Small Sample Linear Regression Model Selection with $AIC_C$}
+
+\author{Feichun Yang}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This project summaries Hurvich's (1989) Regression and time series model selection in small samples, explores the application of step function with $AIC_C$, $AIC$ and $BIC$ on small samples linear regression model selection.
+\end{abstract}
+
+\input{introduction}
+\input{Summary the Paper.tex}
+\input{Model Selection for Linear Regression.tex}
+\input{Simulation.tex}
+\input{Conclusion and Discussion.tex}
+\input{Reference.tex}
+
+
+
+
+\end{document}

@@ -1,0 +1,57 @@
+
+\section{Model Selection for Linear Regression}
+In this report, we focus on the model order selection of linear regression models, assuming that the candidate models and operating model are both linear. The following is the mathematical process of developing $AIC_C$.\\ 
+
+Consider the true model is:
+\begin{equation}\label{true}
+    y = \mu + \epsilon
+\end{equation}
+where $\epsilon_i  \overset{\mathrm{iid}}{\sim} N(0, \sigma_0^2)$, $i =1, 2,\cdots, n$
+And we write the candidate family of models as:
+\begin{equation}\label{candidate}
+    y = h(\theta) + u
+\end{equation}
+where $h$ is twice continuously differentiable in $\theta$, and $u_i  \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)$, $i =1, 2,\cdots, n$. Therefore, the density function of $u_i$ is $$f(u_i) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}(\frac{u_i}{\sigma})^2}$$
+Both the true model and candidates are linear, thus, we have $h(\theta)=X\theta $, $\mu= X_0\theta$, where $X_{n\times m}$ and $X_0_{n\times m_0}$ are both of full rank.\\
+The log likelihood function of candidate models is(ignore the constant term): 
+\begin{equation}\label{loglikeli}
+    \begin{split}
+        \log g_{\theta,\sigma^2} &= \prod_i^n f(u_i;\theta, \sigma^2)\\
+        &= -n\log(\sigma)-\sum_{i=1}^n\frac{1}{2}(\frac{u_i}{\sigma})^2\\
+        &=-n\log(\sigma)-\frac{1}{2}\frac{(y -h(\theta))^T(y -h(\theta))}{\sigma^2}
+    \end{split}
+\end{equation}
+The $KL$-information is:
+\begin{equation}\label{KL}
+    \Delta (\theta, \sigma^2) = E_F(-2\log g_{\theta, \sigma^2}(y))
+\end{equation}
+As we discussed before, we use $AIC$ to estimate the expected value of KL-information and the goal is to find the model in the candidate family which minimizes it. Suppose $\hat\theta$ and $\hat\delta^2$ are the maximum likelihood estimates of (\ref{loglikeli}), which implies that:
+$\hat\theta = \arg \min(y -h(\theta))^T(y -h(\theta))$, and $\hat\sigma^2 = (y -h(\hat\theta))^T(y -h(\hat\theta))/n$
+Also we can deduce that 
+\begin{equation}\label{KL-es}
+    \Delta (\hat\theta, \hat\sigma^2) = n\log(\sigma^2)+ n\sigma_0^2/\hat\sigma^2 + (\mu -h(\hat\theta))^T(\mu -h(\hat\theta))/\hat\sigma^2
+\end{equation}
+The Akaike information criterion
+\begin{equation}\label{aic}
+\begin{split}
+    AIC &= -2\log g_{\hat{\theta}, \hat{\sigma}^2}(y) + 2(m+1)\\
+    &= n(\log \hat{\sigma}^2+1)+2(m+1)
+\end{split}
+\end{equation}
+In order to provide an approximately unbiased estimate of $E_F(\Delta (\hat{\theta}, \hat{\sigma}^2))$, we use a strong assumption as follow.
+\begin{assumption}\label{ass1}
+    The approximating family includes the operating model.
+\end{assumption}
+
+With assumption \ref{ass1}, Hurvich deduced that $
+    E_F(\Delta (\hat{\theta}, \hat{\sigma}^2)) \approx E_F(n\log \hat\sigma^2)+n^2/(n-m-2)+nm/(n-m-2)$, then we have the expression for $AIC_C$
+\begin{equation}\label{aic_c}
+    \begin{split}
+        AIC_C &= n\log \hat\sigma^2 +n\frac{1+m/n}{1-(m+2)/n}\\
+            &= AIC + \frac{2(m+1)(m+2)}{n-m-2}
+    \end{split}
+\end{equation}
+We can see that $AIC_C$ can be written as the sum of $AIC$ and a penalty.\\
+
+$AIC_C$ is a biased-corrected version of $AIC$. Hurvich also proved that the criteria have the same form for the autoregressive model.
+$AIC_C$ is asymptotically efficient in both regression and time series. It is exactly unbiased for linear regression models with assumption 1, but only approximately unbiased for nonlinear regression and time series models. Moreover, due to $AIC_C$ being written in the form of the sum of $AIC$ and a nonstochastic penalty, the bias reduces without any trade-off in variance. The overfitting problem of $AIC$ methods in small sample size cases is caused by the strongly negative bias, we can avoid it by using $AIC_C$ instead of $AIC$. Therefore, $AIC_C$ methods do not require the restriction of the maximum allowable dimension of the candidate models. 

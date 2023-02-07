@@ -1,0 +1,70 @@
+\section{Simulation}
+
+As we plan to compare the step function with different criteria, a step function using $AIC_C$ is necessary. To develop it, we rewrote the code of the step function which can be used with $AIC$ and $BIC$. As the logic of selection is the same, adjustment to those codes related to criteria is enough. According to (\ref{aic_c}), we can simply change parts based on $AIC$ into $AIC_C$.\\
+Consider the true model (\ref{true}).In this report, we focus on linear regression and try to simulate the result of the paper.Thus, we have assumption 1 and the assumption that all the candidate models and the true model are linear regression models. Hence, we have:
+$H = X\theta$, $\mu = X_0\theta_0$, and the columns of $X_0$ are contained in $X$ as well. \\
+
+In the first part, we set the true model $X_0$ with a dimension of $m_0 = 3$, the candidates $X$ with a dimension of $m= 7$ and sample size $n = 10$, where the first 3 columns of $X$ are $X_0$. All the columns in X are independent and identically distributed to $N(\mu, \sigma^2)$, where $\mu$ and $\sigma^2$ are randomly selected in each test. Following the true model (\ref{true}) and the linearity, we generated $Y =X_0\theta_0 + \epsilon$, where $\epsilon \sim N(0, \sigma_0^2)$ and $\sigma^2$ is a random number. 
+After data generation, we applied step functions using$ AIC$, $BIC$, $AIC_C$ separately, and recorded the result, compared the dimension of the selected model and $m_0$. 
+To avoid serendipity, we repeated the above process 100 times and analyzed all the records together.\\ 
+In the second part, the second part of our test increased $n$ to 50, other steps remain the same. Then in the third part, we set $m$ to 6 and 5 for each value of $n$. Finally, we compared the results and came to some conclusions.\\
+Finally, we obtained two tables as follow.\\
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{ c | c c c c c c c}
+\hline
+ \multicolumn{8}{c}{n = 10, $m_0$= 3} \\
+ \hline
+    m  & 1 & 2 & 3($m_0$) & 4 & 5 & 6 & 7\\
+    \hline
+ $AIC$ & 0 & 0 & 20 & 33 & 21 & 13 &13\\ 
+ $BIC$ & 0 & 0 & 25 & 31 & 26 & 9 & 9\\ 
+ $AIC_C$ & 11 & 2 & 84 & 1 & 0 & 0 & 0 \\
+  \hline
+    m  & 1 & 2 & 3($m_0$) & 4 & 5 & 6 & \\
+    \hline
+ $AIC$ & 0 & 0 & 31 & 33 & 27 & 9 &\\ 
+ $BIC$ & 0 & 0 & 36 & 33 & 22 & 9 & \\ 
+ $AIC_C$ & 6 & 2 & 88 & 2 & 0 & 0 &  \\
+  \hline
+    m  & 1 & 2 & 3($m_0$) & 4 & 5 &  & \\
+    \hline
+ $AIC$ & 0 & 1 & 43 & 42 & 14 &  &\\ 
+ $BIC$ & 1 & 1 & 44 & 42 & 12 & & \\ 
+ $AIC_C$ & 4 & 4 & 85 & 3 & 0 &  &  
+\end{tabular}
+\caption{\label{t1}Frequency of order selected by various criteria in 100 realizations of regression model with $m_0 = 3$, $n=10$}
+\end{center}
+\end{table}
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{ c | c c c c c c c}
+\hline
+ \multicolumn{8}{c}{n = 50, $m_0$= 3} \\
+ \hline
+    m  & 1 & 2 & 3($m_0$) & 4 & 5 & 6 & 7\\
+    \hline
+ $AIC$ & 0 & 0 & 52 & 36 & 7 & 4 &1\\ 
+ $BIC$ & 0 & 0 & 81 & 17 & 1 & 1 & 0 \\  
+ $AIC_C$ & 0 & 0 & 63 & 31 & 4 & 2 & 0 \\
+  \hline
+    m  & 1 & 2 & 3($m_0$) & 4 & 5 & 6 & \\
+    \hline
+ $AIC$ & 0 & 0 & 54 & 38 & 7 & 1 &\\ 
+ $BIC$ & 0 & 0 & 82 & 17 & 1 & 0 & \\ 
+ $AIC_C$ & 0 & 0 & 70 & 29 & 1 & 0 &  \\
+  \hline
+    m  & 1 & 2 & 3($m_0$) & 4 & 5 &  & \\
+    \hline
+ $AIC$ & 0 & 0 & 69 & 23 & 8 &  &\\ 
+ $BIC$ & 0 & 0 & 87 & 12 & 1 & & \\ 
+ $AIC_C$ & 0 & 0 & 75 & 21 & 4 &  &  
+\end{tabular}
+\caption{\label{t2}Frequency of order selected by various criteria in 100 realizations of regression model with $m_0 = 3$, $n=50$}
+\end{center}
+\end{table}
+
+Table \ref{t1} shows that when sample size $n=10$, $m =7$, among 100 realizations, 84 final models selected by step function with $AIC_C$ have the same order as the true model, while $AIC$ only successfully selected 20 and $BIC$ only selected 25. It suggests that $AIC_C$ performs much better than the other two criteria. Furthermore, we can see that most models selected by $AIC$ and $BIC$ have orders higher than the true model, while $AIC_C$ selected relatively more models with the lower order. Also, we can find that the sum of all the numbers in the row of $AIC_C$ is less than 100, which means that some selected models are just constant terms in this case. It refers that $AIC$ and $BIC$ tend to overfit. A similar pattern can be seen in the table of $m=6$ and $m=5$. By comparing the result with different $m$, the accuracy of methods with $AIC$ are decreasing as $m$ moves closer to $n$, which confirms the theory that $AIC$ becomes a strongly biased estimate of $KL$-information, and the bias leads to overfitting. There is not any evident proof showing that $AIC_C$ has a such tendency.\\
+
+However, according to Table \ref{t2}, as $n$ increases to a relatively large number, things become different. Results show that $BIC$ is the best of the three criteria. $AIC_C$ still performs a little bit better than $AIC$ though, they have similar patterns and the overfitting and influence of $m$ are also shown in the case of $AIC_C$. It accords with our theoretical results \ref{aic_c}, that the additional penalty converges to 0 as $n$ increases, namely, $AIC_C$ converges to $AIC$.
